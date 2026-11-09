@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadIT — Material Book Tracker</title>
+  <!-- Google Fonts: Roboto & Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top App Bar (Material 3 Small App Bar) -->
+  <header class="top-app-bar">
+    <div class="app-bar-content">
+      <div class="app-bar-title">
+        <span class="material-symbols-outlined logo-icon">auto_stories</span>
+        <span>Read<strong>IT</strong></span>
+      </div>
+      <div class="app-bar-actions">
+        <button class="icon-button" id="themeToggleBtn" title="Toggle Compact View" aria-label="Toggle compact list view">
+          <span class="material-symbols-outlined">view_agenda</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    
+    <!-- Hero / Headline Section -->
+    <section class="hero-section">
+      <h1 class="headline-medium">Your Reading Journey</h1>
+      <p class="body-medium text-secondary">Organize, track, and conquer your book collection effortlessly.</p>
+    </section>
+
+    <!-- M3 Metric Stat Cards -->
+    <section class="stats-grid" aria-label="Reading Statistics">
+      <div class="stat-card total">
+        <div class="stat-icon-wrapper">
+          <span class="material-symbols-outlined">library_books</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-num" id="totalCount">0</span>
+          <span class="stat-label">Total Books</span>
+        </div>
+      </div>
+
+      <div class="stat-card read">
+        <div class="stat-icon-wrapper">
+          <span class="material-symbols-outlined">check_circle</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-num" id="readCount">0</span>
+          <span class="stat-label">Completed</span>
+        </div>
+      </div>
+
+      <div class="stat-card unread">
+        <div class="stat-icon-wrapper">
+          <span class="material-symbols-outlined">pending</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-num" id="unreadCount">0</span>
+          <span class="stat-label">In Progress</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- M3 Search Bar (Pill Shape) -->
+    <section class="search-container">
+      <div class="m3-search-bar">
+        <span class="material-symbols-outlined search-leading-icon">search</span>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search by title or author..."
+          autocomplete="off"
+          aria-label="Search books"
+        >
+        <button id="clearSearchBtn" class="icon-button clear-btn" title="Clear search" aria-label="Clear search query" style="display: none;">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Filter Chips (M3 Assist/Filter Chips) -->
+    <section class="filter-chips-row" aria-label="Status Filters">
+      <button class="chip active" data-filter="all">
+        <span class="material-symbols-outlined chip-check">check</span>
+        <span>All Books</span>
+      </button>
+      <button class="chip" data-filter="Read">
+        <span class="material-symbols-outlined chip-check" style="display:none;">check</span>
+        <span>Read</span>
+      </button>
+      <button class="chip" data-filter="Not Read">
+        <span class="material-symbols-outlined chip-check" style="display:none;">check</span>
+        <span>Not Read</span>
+      </button>
+    </section>
+
+    <!-- Book Form Card (M3 Elevated Card) -->
+    <section class="m3-card form-card">
+      <div class="card-header">
+        <div class="header-icon-container" id="formHeaderIcon">
+          <span class="material-symbols-outlined">book_4</span>
+        </div>
+        <div>
+          <h2 class="title-large" id="formTitle">Add Book</h2>
+          <p class="body-small text-secondary" id="formSubtitle">Enter the title, author and status of your book</p>
+        </div>
+      </div>
+
+      <form id="bookForm" novalidate>
+        <input type="hidden" id="editBookId" value="">
+
+        <!-- M3 Outlined Text Field: Title -->
+        <div class="m3-text-field">
+          <input 
+            type="text" 
+            id="bookTitle" 
+            class="text-input" 
+            placeholder=" " 
+            required 
+            autocomplete="off"
+          >
+          <label for="bookTitle" class="floating-label">Book Title *</label>
+          <span class="material-symbols-outlined field-trailing-icon">menu_book</span>
+        </div>
+
+        <!-- M3 Outlined Text Field: Author -->
+        <div class="m3-text-field">
+          <input 
+            type="text" 
+            id="bookAuthor" 
+            class="text-input" 
+            placeholder=" " 
+            required 
+            autocomplete="off"
+          >
+          <label for="bookAuthor" class="floating-label">Author Name *</label>
+          <span class="material-symbols-outlined field-trailing-icon">person</span>
+        </div>
+
+        <!-- M3 Segmented Button for Status Selection -->
+        <div class="field-label-group">
+          <label class="field-group-title">Reading Status</label>
+          <div class="segmented-button-group" role="radiogroup" aria-label="Book status selector">
+            <button type="button" class="segmented-btn active" data-status="Not Read" role="radio" aria-checked="true">
+              <span class="material-symbols-outlined">hourglass_top</span>
+              <span>Not Read</span>
+            </button>
+            <button type="button" class="segmented-btn" data-status="Read" role="radio" aria-checked="false">
+              <span class="material-symbols-outlined">done_all</span>
+              <span>Read</span>
+            </button>
+          </div>
+          <input type="hidden" id="bookStatus" value="Not Read">
+        </div>
+
+        <!-- Form Buttons -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-text" id="cancelEditBtn" style="display: none;">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-filled" id="submitBtn">
+            <span class="material-symbols-outlined btn-icon">add</span>
+            <span id="submitBtnText">Add Book</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Books List Section -->
+    <section class="library-section">
+      <div class="section-title-bar">
+        <h2 class="title-medium">Library Collection</h2>
+        <span class="caption text-secondary" id="activeFilterNote">Showing all</span>
+      </div>
+
+      <!-- Book List Dynamic Container -->
+      <div id="booksList" class="books-grid"></div>
+
+      <!-- Empty State (No books at all) -->
+      <div id="emptyState" class="empty-state-card" style="display: none;">
+        <div class="empty-illustration">
+          <span class="material-symbols-outlined">menu_book</span>
+        </div>
+        <h3 class="title-medium">Your library is currently empty</h3>
+        <p class="body-medium text-secondary">Start tracking books you've read or plan to read using the form above.</p>
+      </div>
+
+      <!-- No Results State (Search filtered out everything) -->
+      <div id="noResultsState" class="empty-state-card" style="display: none;">
+        <div class="empty-illustration">
+          <span class="material-symbols-outlined">search_off</span>
+        </div>
+        <h3 class="title-medium">No matching books found</h3>
+        <p class="body-medium text-secondary">We couldn't find anything matching your search term. Check the spelling or reset filters.</p>
+        <button class="btn btn-tonal mt-3" id="resetSearchBtn">
+          <span class="material-symbols-outlined btn-icon">restart_alt</span>
+          Reset Search
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- M3 Confirmation Dialog (Replaces native browser confirm) -->
+  <div class="dialog-scrim" id="deleteDialogScrim" aria-hidden="true">
+    <div class="m3-dialog" role="alertdialog" aria-labelledby="dialogTitle" aria-describedby="dialogDesc">
+      <div class="dialog-icon-wrapper">
+        <span class="material-symbols-outlined">delete</span>
+      </div>
+      <h3 class="title-large" id="dialogTitle">Delete Book?</h3>
+      <p class="body-medium text-secondary" id="dialogDesc">
+        Are you sure you want to remove this book from your collection? This action cannot be undone.
+      </p>
+      <div class="dialog-actions">
+        <button class="btn btn-text" id="cancelDeleteBtn">Cancel</button>
+        <button class="btn btn-danger-filled" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- M3 Snackbar Toast Notification -->
+  <div class="m3-snackbar" id="snackbar" role="status" aria-live="polite">
+    <span class="material-symbols-outlined snackbar-icon" id="snackbarIcon">info</span>
+    <span class="snackbar-text" id="snackbarText">Book added to your library</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
